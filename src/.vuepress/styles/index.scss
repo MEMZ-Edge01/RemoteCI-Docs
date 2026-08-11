@@ -1,0 +1,22 @@
+:root {
+  --vp-c-accent: #6750a4;
+  --vp-c-accent-bg: #6750a4;
+  --vp-c-accent-hover: #7965af;
+  --vp-c-accent-soft: rgb(103 80 164 / 14%);
+}
+
+[data-theme="dark"] {
+  --vp-c-accent: #d0bcff;
+  --vp-c-accent-bg: #7f67be;
+  --vp-c-accent-hover: #e8ddff;
+  --vp-c-accent-soft: rgb(208 188 255 / 14%);
+}
+
+.vp-hero-info-wrapper .vp-hero-image {
+  filter: drop-shadow(0 16px 28px rgb(52 42 78 / 22%));
+}
+
+.vp-card {
+  border-radius: 16px;
+}
+
