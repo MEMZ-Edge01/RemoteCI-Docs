@@ -1,8 +1,10 @@
 # RemoteCI 文档
 
+**在线文档：[https://memz-edge01.github.io/RemoteCI-Docs/](https://memz-edge01.github.io/RemoteCI-Docs/)**
+
 RemoteCI 的项目介绍、使用指南和服务端部署文档。
 
-文档站基于 VuePress 2 与 VuePress Theme Hope，信息架构参考 ClassIsland 文档站，但使用 RemoteCI 自有内容与视觉资产。
+文档站基于 VuePress 2 与 VuePress Theme Hope，使用 RemoteCI 自有内容与视觉资产。
 
 ## 本地预览
 
