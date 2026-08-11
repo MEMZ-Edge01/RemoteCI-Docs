@@ -40,4 +40,3 @@ RemoteCI 每次增加、删除或改变用户可见功能时，都必须同步�
 
 - RemoteCI：https://github.com/MEMZ-Edge01/RemoteCI
 - RemoteCI-Docs：https://github.com/MEMZ-Edge01/RemoteCI-Docs
-- 参考站：https://docs.classisland.tech/

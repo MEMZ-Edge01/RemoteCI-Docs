@@ -201,89 +201,25 @@ Wear OS 配置来源见 `D:\Files\Codes\Projects\RemoteCI\wearos\app\src\main\ja
 - Android 清单允许明文流量，便于局域网和模拟器调试，但生产公网部署应使用 HTTPS/WSS，见 `D:\Files\Codes\Projects\RemoteCI\wearos\app\src\main\AndroidManifest.xml:10-16` 喵～
 - README 明确把 Tiles、小米 HyperOS 和 watchOS 列为后续迭代，因此不能放入“现有功能”，见 `D:\Files\Codes\Projects\RemoteCI\README.md:3-5` 喵～
 
-## 7. 仿照 ClassIsland 的文档站方案
-
-### 7.1 可复用的技术骨架
-
-ClassIsland 官方文档仓库明确基于 VuePress，并使用 Node 20、pnpm 和 `pnpm run docs:dev` 启动本地站点，见 [ClassIsland 文档仓库 README](https://github.com/ClassIsland/classisland-docs-next#readme) 喵～
-
-其当前 `package.json` 使用 VuePress 2、Vite bundler、Vue 3 和 `vuepress-theme-hope`，内容根目录为 `src`，脚本包括 `docs:dev`、`docs:build` 与 PDF 导出，见 [ClassIsland 官方 package.json](https://github.com/ClassIsland/classisland-docs-next/blob/main/package.json) 喵～
-
-官方仓库把主题配置放在 `src/.vuepress`，其中含 `config.ts`、`theme.ts`、`navbar/`、`sidebar/`、`styles/` 与 `public/`，正文按受众和任务拆分为顶级目录，见 [官方 src 目录](https://github.com/ClassIsland/classisland-docs-next/tree/main/src) 与 [官方 .vuepress 目录](https://github.com/ClassIsland/classisland-docs-next/tree/main/src/.vuepress) 喵～
-
-官方首页使用产品一句话、主行动按钮、官网和 GitHub 入口，再引导到各文档分区，见 [ClassIsland 在线文档首页](https://docs.classisland.tech/) 与 [官方首页源文件](https://github.com/ClassIsland/classisland-docs-next/blob/main/src/README.md) 喵～
-
-RemoteCI 可以复用信息架构和技术栈，但不应直接复制 ClassIsland 的正文、图片或品牌素材，因为其文档采用 CC BY-NC-SA 4.0，见 [ClassIsland 文档仓库许可证说明](https://github.com/ClassIsland/classisland-docs-next#许可证) 喵～
-
-### 7.2 建议导航结构
-
-```text
-首页
-├─ 项目介绍
-├─ 架构与数据流
-└─ 当前状态与路线图
-快速开始
-├─ 系统要求
-├─ 安装 ClassIsland 插件
-├─ 安装 Wear OS 应用
-├─ 局域网首次连接
-└─ 云端首次连接
-使用文档
-├─ 手表主页与课程状态
-├─ 通知与振动
-├─ 交换或替换课程
-├─ 连接设置
-└─ 账号与权限
-服务端部署
-├─ 部署前检查
-├─ Docker 部署
-├─ 原生 .NET 部署
-├─ 配置参考
-├─ HTTPS 与反向代理
-├─ 数据备份与恢复
-└─ 升级与回滚
-运维与排障
-├─ 健康检查
-├─ 查看日志
-├─ 插件无法配对
-├─ 手表无法连接
-├─ WebSocket 代理问题
-└─ 数据库与账号恢复
-开发与贡献
-├─ 仓库结构
-├─ 本地开发
-├─ 协议与 API
-├─ 测试矩阵
-├─ 文档写作规范
-└─ 功能与文档同步规则
-```
-
-### 7.3 首页信息层级建议
-
-1. Hero 区只写一句准确定位，例如“让 ClassIsland 课表在 Wear OS 上实时可见并可安全控制”喵～
-2. 主按钮进入“快速开始”，次按钮进入 GitHub 主仓库，服务端部署作为明确入口喵～
-3. 功能卡片只列已经过构建和端到端验证的能力，开发中能力放入路线图并标注状态喵～
-4. 首页应显著显示当前版本、支持平台、所需 ClassIsland 版本与开发中警告喵～
-
-## 8. 功能变更与文档同步规则
+## 7. 功能变更与文档同步规则
 
 “以后每次增减功能都同步改动文档站”不能只写成口号，建议在两个仓库同时落实流程约束喵～
 
-### 8.1 RemoteCI 主仓库规则
+### 7.1 RemoteCI 主仓库规则
 
 - PR 模板必须包含“是否影响用户可见功能、配置、API、协议、部署或兼容性”的检查项喵～
 - 任一答案为是时，PR 必须附 RemoteCI-Docs 的对应 PR 链接，或明确说明为何无需改文档喵～
 - 改动共享协议时，必须同步更新协议参考、三端兼容矩阵与迁移说明喵～
 - 改动服务端配置时，必须同步更新配置表、Docker 示例、升级与回滚说明喵～
 
-### 8.2 RemoteCI-Docs 仓库规则
+### 7.2 RemoteCI-Docs 仓库规则
 
 - 文件名使用小写和连字符，正文按受众与任务拆分，避免把所有内容堆在单页喵～
 - CI 至少执行 `pnpm install --frozen-lockfile`、`pnpm run docs:build` 和 Markdown lint 喵～
 - 文档页面应提供编辑链接、最近更新时间和对应源码版本信息，降低文档与代码漂移风险喵～
-- 发布流程应只在文档构建通过后部署 `src/.vuepress/dist`，ClassIsland 官方仓库的工作流可作为一手参考，见 [官方部署工作流](https://github.com/ClassIsland/classisland-docs-next/blob/main/.github/workflows/deploy-docs.yml) 喵～
+- 发布流程应只在文档构建通过后部署 `src/.vuepress/dist` 喵～
 
-## 9. 建站前的内容冻结建议
+## 8. 建站前的内容冻结建议
 
 第一版文档站可以立即搭建 VuePress 骨架，并先发布项目定位、架构、开发中状态、贡献规则和源码可确认的配置参考喵～
 
