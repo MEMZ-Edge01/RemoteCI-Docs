@@ -26,7 +26,15 @@ RemoteCI 每次增加、删除或改变用户可见功能时，都必须同步�
 
 ## 发布
 
-推送到 <code>main</code> 后，GitHub Actions 会构建并部署站点。首次发布前，需要在仓库“Settings → Pages”中把 Source 设为“GitHub Actions”。
+推送到 <code>main</code> 后，GitHub Actions 会始终验证文档构建。
+
+需要部署 GitHub Pages 时：
+
+1. 确认当前 GitHub 套餐支持该仓库的 Pages。GitHub Free 不支持私有仓库 Pages。
+2. 在仓库“Settings → Pages”中把 Source 设为“GitHub Actions”。
+3. 新建值为 <code>true</code> 的仓库 Actions 变量 <code>PAGES_ENABLED</code>。
+
+未启用该变量时，部署任务会跳过，不影响文档构建检查。
 
 ## 相关仓库
 
