@@ -48,7 +48,7 @@ export default hopeTheme({
       {
         text: "开发与贡献",
         icon: "code",
-        children: ["architecture", "docs-maintenance"],
+        children: ["architecture", "extensions", "docs-maintenance"],
       },
     ],
     "/": [],

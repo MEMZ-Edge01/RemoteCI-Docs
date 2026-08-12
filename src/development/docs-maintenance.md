@@ -30,6 +30,19 @@ order: 2
 - [ ] 在本地运行 <code>pnpm docs:build</code>。
 - [ ] 检查文档链接和 GitHub Pages 预览。
 
+## 同步验证（RemoteCI 侧）
+
+功能合并前，RemoteCI 应能通过仓库 CI 的同一组检查：
+
+~~~powershell
+dotnet build RemoteCI.slnx -c Release
+dotnet test RemoteCI.slnx -c Release --no-build
+cd wearos
+.\gradlew.bat testDebugUnitTest assembleDebug
+~~~
+
+手表构建需要 JDK 17 与 Android SDK。RemoteCI 功能变更应关联本仓库对应文档改动，并在合并前完成 <code>pnpm docs:build</code> 验证。
+
 ::: important 仓库边界
 RemoteCI 与 RemoteCI-Docs 是两个独立仓库。功能 PR 应关联对应的文档 PR；在 RemoteCI 主仓库尚未增加自动检查前，需要由维护者在代码评审中执行这项规则。
 :::
@@ -61,4 +74,3 @@ pnpm docs:build
 - 不写未经源码或实际运行验证的功能。
 - 尚未完成的能力标为“计划中”或“开发中”。
 - 涉及密码、令牌和配对码时，示例只能使用占位值。
-

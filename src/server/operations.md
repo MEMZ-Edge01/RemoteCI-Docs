@@ -40,14 +40,22 @@ docker compose start remoteci
 
 ## 升级
 
+服务端、插件和手表使用三种不同的升级方式：
+
+- 服务端：管理员登录 WebUI 后，在“个人账号 → 系统更新”点击“检查更新”，从 GitHub 最新 release 下载当前平台包并就地覆盖，随后服务端进程自动退出。Docker 的 <code>restart: unless-stopped</code> 会以新文件重新启动容器，启动时自动执行数据库迁移。注意：直接以 <code>dotnet</code> 在 Windows 上运行服务端时，运行中的程序集会被锁定，自动更新可能失败，建议使用 Docker。
+- 插件：不做内置更新界面，由 ClassIsland 插件市场统一管理；每个 release 都附带 CIPX 与 checksums，指向 release 地址即可自动拉取新版本。
+- 手表：在“设置 → 更新”检查 GitHub 最新 release，下载 APK 并通过系统安装器覆盖安装；要求发布包与当前安装包签名一致。
+
+升级前应先备份数据库卷，且尽量让三端保持同一版本，避免协议版本不一致。
+
+手动升级服务端时：
+
 ~~~powershell
 docker compose stop remoteci
-# 先备份 data 目录，再构建或拉取新镜像。
+# 先备份 remoteci-data 卷，再构建或拉取新镜像。
 docker compose up -d
 docker compose logs --tail 200 remoteci
 ~~~
-
-服务端启动时会自动执行数据库迁移。升级后应同时更新插件和手表端，避免协议版本不一致。
 
 ## 安全清单
 
@@ -56,6 +64,6 @@ docker compose logs --tail 200 remoteci
 - 初始密码至少 8 位，实际部署建议使用随机长密码。
 - 不在 Compose 文件、截图或问题反馈中公开密码、令牌和配对码。
 - 普通用户按最小权限分配，设备丢失后立即撤销会话。
+- “主界面与电源控制”（SystemControl）单独保护主界面显隐与电源操作，不要与发送通知权限混用。
 - 定期备份并实际演练恢复。
 - 定期更新服务端镜像、插件和手表应用。
-

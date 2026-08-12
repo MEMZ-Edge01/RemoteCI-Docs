@@ -31,11 +31,17 @@ features:
   - title: 双向控制
     icon: arrows-rotate
     details: 在获得权限后，从手表执行换课、调课或发送通知等操作。
+  - title: 丰富控制
+    icon: sliders
+    details: 控制音量、电源、ClassIsland 主界面显隐，还能执行其他插件注册的扩展功能。
+  - title: 自动更新
+    icon: cloud-arrow-down
+    details: WebUI 与手表端可从 GitHub 最新 release 一键检查并升级，插件由插件市场管理。
 ---
 
 RemoteCI 是面向 ClassIsland 2.x 的课表手表联动项目，由 ClassIsland 插件、ASP.NET Core 服务端、Wear OS 客户端和共享通信协议组成。
 
-项目当前仍处于早期开发阶段，页面和接口可能继续调整。部署到正式环境前，请先阅读[安全与运维建议](./server/operations.md)。
+当前版本为 v0.2，服务端、插件与手表端已完成协议 v2 对齐，并配置了 CI 构建与自动化测试。部署到正式环境前，请先阅读[安全与运维建议](./server/operations.md)。
 
 ## 从这里开始
 
@@ -68,8 +74,8 @@ RemoteCI 是面向 ClassIsland 2.x 的课表手表联动项目，由 ClassIsland
 - 希望离开教室电脑后，仍能通过自建服务端查看课程状态。
 - 需要按账号分配查看课表、管理课表、发送通知或管理用户的权限。
 - 希望数据保留在自己的 NAS、服务器或局域网环境中。
+- 希望通过扩展接口把更多课堂操作带到手表。
 
 ::: warning 当前状态
-RemoteCI 尚未标记稳定版本。本文档依据当前源码编写；若发布包与源码版本不一致，应以发布说明为准。
+RemoteCI v0.2 已通过 CI 构建与自动化测试，但尚未完成真机端到端验收。本文档依据当前源码编写；若发布包与源码版本不一致，应以发布说明为准。
 :::
-
