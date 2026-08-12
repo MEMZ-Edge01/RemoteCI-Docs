@@ -62,6 +62,11 @@ RemoteCI 是面向 ClassIsland 2.x 的课表手表联动项目，由 ClassIsland
     link="./server/deployment.html"
   />
   <VPCard
+    title="接入扩展"
+    desc="把其他插件注册的自定义远程功能带到手表控制页。"
+    link="./extensions/"
+  />
+  <VPCard
     title="开发与贡献"
     desc="了解仓库结构，以及功能与文档同步规则。"
     link="./development/docs-maintenance.html"

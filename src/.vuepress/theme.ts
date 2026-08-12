@@ -21,6 +21,7 @@ export default hopeTheme({
     { text: "快速开始", icon: "rocket", link: "/guide/getting-started" },
     { text: "使用文档", icon: "book", link: "/guide/features" },
     { text: "服务端部署", icon: "server", link: "/server/deployment" },
+    { text: "接入扩展", icon: "puzzle-piece", link: "/extensions/" },
     { text: "开发与贡献", icon: "code", link: "/development/docs-maintenance" },
   ],
   sidebar: {
@@ -44,11 +45,18 @@ export default hopeTheme({
         children: ["deployment", "configuration", "operations"],
       },
     ],
+    "/extensions/": [
+      {
+        text: "接入扩展",
+        icon: "puzzle-piece",
+        children: ["index"],
+      },
+    ],
     "/development/": [
       {
         text: "开发与贡献",
         icon: "code",
-        children: ["architecture", "extensions", "docs-maintenance"],
+        children: ["architecture", "docs-maintenance"],
       },
     ],
     "/": [],
