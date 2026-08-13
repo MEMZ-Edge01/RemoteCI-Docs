@@ -13,7 +13,7 @@ RemoteCI 有三项运行组件：ClassIsland 插件、RemoteCI 服务端和 Wear
 | 组件 | 要求 |
 | --- | --- |
 | 教室电脑 | 已安装并可正常运行的 ClassIsland 2.x |
-| 手表 | Wear OS 3 或更高版本，RemoteCI 手表应用 0.2.0 |
+| 手表 | Wear OS 3 或更高版本，RemoteCI 手表应用 0.3.1 |
 | 服务端 | 支持 Docker 的 NAS 或 Linux 服务器，建议有域名和 HTTPS |
 | 网络 | 局域网直连默认使用 TCP 8765；服务端默认使用 TCP 8080 |
 
@@ -33,7 +33,7 @@ docker logs remoteci
 
 ## 二、连接 ClassIsland 插件
 
-1. 在 ClassIsland 中安装 RemoteCI 插件（0.2.0）。
+1. 在 ClassIsland 中安装 RemoteCI 插件（0.3.1）。
 2. 打开“设置”中的“RemoteCI 设置”。
 3. 局域网直连需要启用局域网服务，并确认端口，默认是 <code>8765</code>。
 4. 云端中转需要启用云端连接，填写服务端的完整地址。

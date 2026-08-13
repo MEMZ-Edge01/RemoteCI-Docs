@@ -65,9 +65,10 @@ order: 3
 
 ## 更新
 
-- 服务端：管理员在“个人账号 → 系统更新”检查 GitHub 最新 release，下载当前平台包并自动重启。
-- 手表：在“设置 → 更新”检查并下载 APK 覆盖安装，要求发布包与当前安装包签名一致。
+- 服务端：管理员在“个人账号 → 系统更新”检查 GitHub 最新 release；Windows、Linux 与 Docker 会按各自安全流程替换文件并自动重启。
+- 手表：必须先连接 WebUI，只能检查并安装不高于该 WebUI 版本的 APK；安装确认回调使用 Android PackageInstaller 的可变显式 PendingIntent。
 - 插件：升级由 ClassIsland 插件市场统一管理。
+- 飞牛 fnOS：检查和升级由 fnOS 应用商店统一管理，WebUI 不提供下载按钮。
 
 ## 外观主题
 

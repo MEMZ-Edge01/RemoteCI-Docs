@@ -208,7 +208,7 @@ services:
 
 - fnOS 应用中心管理应用升级：新 fpk 安装时运行 upgrade 脚本，Docker 应用会基于新 compose 重建容器并拉取新镜像（官方 Docker 案例说明升级由应用中心处理；未找到单独的应用升级 API 页面）。
 - 开放 API 目前聚焦文件授权/ACL/路径/平台配置（`/api/v1/trimapp` + Unix Socket + `TRIM_API_TOKEN`），**没有**"应用自我安装/自我升级"接口（来源：https://developer.fnnas.com/api/overview/ 、FNOSP references/open-api.md）。
-- 因此容器内 WebUI 无法直接触发 fpk 安装；主流做法是：WebUI 检查 GitHub release 并下载新 fpk，用户在应用中心手动确认安装（本仓库 RemoteCI 即采用该模式，见 `REMOTECI_RUNTIME=fnos` 分支）。
+- 因此容器内 WebUI 无法直接触发 fpk 安装。该调研最初建议由 WebUI 下载 fpk 后手动确认；RemoteCI v0.3.1 起已改为完全由 fnOS 应用商店检查和升级，WebUI 仅显示托管状态。
 - fpk 附件命名官方无强制约定；本仓库统一为 `RemoteCI-<版本>.fpk`。
 
 ## I. 发布

@@ -42,9 +42,10 @@ docker compose start remoteci
 
 服务端、插件和手表使用三种不同的升级方式：
 
-- 服务端：管理员登录 WebUI 后，在“个人账号 → 系统更新”点击“检查更新”，从 GitHub 最新 release 下载当前平台包并就地覆盖，随后服务端进程自动退出。Docker 的 <code>restart: unless-stopped</code> 会以新文件重新启动容器，启动时自动执行数据库迁移。注意：直接以 <code>dotnet</code> 在 Windows 上运行服务端时，运行中的程序集会被锁定，自动更新可能失败，建议使用 Docker。
+- 服务端：管理员登录 WebUI 后，在“个人账号 → 系统更新”点击“检查更新”。Docker 会就地替换后由 <code>restart: unless-stopped</code> 重新启动；Windows 与裸机 Linux 会启动独立更新器，等待旧进程退出和文件锁释放后再替换文件并自动重启。更新前会核对包内服务端版本与 release 标签。
 - 插件：不做内置更新界面，由 ClassIsland 插件市场统一管理；每个 release 都附带 CIPX 与 checksums，指向 release 地址即可自动拉取新版本。
-- 手表：在“设置 → 更新”检查 GitHub 最新 release，下载 APK 并通过系统安装器覆盖安装；要求发布包与当前安装包签名一致。
+- 手表：连接 WebUI 后，在“设置 → 更新”选择不高于该 WebUI 版本的 APK，并通过系统安装器覆盖安装；要求发布包与当前安装包签名一致。
+- 飞牛 fnOS：WebUI 只显示“由fnOS应用商店管理”，检查和升级均由 fnOS 应用商店完成。
 
 升级前应先备份数据库卷，且尽量让三端保持同一版本，避免协议版本不一致。
 

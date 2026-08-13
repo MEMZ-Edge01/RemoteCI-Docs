@@ -41,7 +41,7 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 | 类型 | 方向 | 用途 |
 | --- | --- | --- |
 | <code>auth_challenge</code> / <code>auth_proof</code> | 插件 ↔ 手表 | 局域网一次性 HMAC 挑战认证 |
-| <code>account_sync</code> | 服务端 → 插件 | 账号、权限与设备验证器镜像 |
+| <code>account_sync</code> | 服务端 → 插件 | 账号、权限、设备验证器与服务端版本镜像 |
 | <code>state_push</code> | 插件 → 服务端/手表 | 高频当前课程状态 |
 | <code>schedule_sync</code> | 插件 → 服务端/手表 | 未来七日课表 |
 | <code>extensions_sync</code> | 插件 → 服务端/手表 | 扩展功能清单 |
@@ -65,12 +65,14 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 
 管理员有效权限固定为 63；普通用户固定含值 1。访问令牌默认 1 小时，设备会话默认 30 天可续期；插件用一次性配对码换取长期凭据。授权镜像超过 24 小时未更新时，局域网直连只允许查看课程。
 
+云端与局域网认证成功时，<code>auth_state.serverVersion</code> 都会携带当前 WebUI 版本；局域网值来自 <code>account_sync.serverVersion</code>。手表更新选择器以此作为版本上限。
+
 ## 版本与构建
 
-- 插件 0.2.0.0：net8.0，兼容 ClassIsland 2.x 宿主；CIPX 由 <code>CreateCipx=true</code> 生成。
-- 服务端 0.2.0：net10.0，发布 linux-x64 / win-x64 平台包。
-- 手表 0.2.0：minSdk 30 / targetSdk 37，Release APK 使用签名密钥构建。
+- 插件 0.3.1.0：net8.0，兼容 ClassIsland 2.x 宿主；CIPX 由 <code>CreateCipx=true</code> 生成。
+- 服务端 0.3.1：net10.0，发布 linux-x64 / win-x64 平台包。
+- 手表 0.3.1：minSdk 30 / targetSdk 37，Release APK 使用签名密钥构建。
 
 ## 开发状态
 
-v0.2 已完成三端协议对齐并配置 CI（构建 + 约 63 个自动化测试）。发布前仍应以同一版本在真机完成端到端验收，见[开发状态](../guide/status.md)。
+v0.3.1 已完成三端协议对齐、跨平台更新修复与 CI 配置。发布前仍应以同一版本在真机完成端到端验收，见[开发状态](../guide/status.md)。
