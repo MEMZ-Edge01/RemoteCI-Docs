@@ -44,11 +44,14 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 | <code>account_sync</code> | 服务端 → 插件 | 账号、权限、设备验证器与服务端版本镜像 |
 | <code>state_push</code> | 插件 → 服务端/手表 | 高频当前课程状态 |
 | <code>schedule_sync</code> | 插件 → 服务端/手表 | 未来七日课表 |
+| <code>schedule_pull</code> | 服务端/手表 → 插件 | 请求插件立即重新生成并推送七日课表；不携带参数 |
 | <code>extensions_sync</code> | 插件 → 服务端/手表 | 扩展功能清单 |
 | <code>event_notify</code> | 插件 → 服务端/手表 | 上课、课间、放学、课表变更、自定义、自动化与插件通知事件 |
 | <code>command</code> / <code>command_result</code> | 手表/服务端 → 插件 | 换课、通知、清除提醒、主界面、电源、音量与扩展命令 |
 
 命令编号：1 换课、2 发送通知、3 清除提醒、4 主界面显隐、5 电源、6 音量、7 运行扩展。事件编号：1 上课、2 课间、3 放学、4 课表变更、5 自定义、6 自动化通知、7 第三方插件通知。
+
+插件完成云端认证后，服务端立即发送一次 <code>schedule_pull</code>，以消除“插件启动时已生成课表、但 WebSocket 尚未连上”的竞态。已认证手表也可发出同一只读消息：云端由服务端转发，局域网由插件直接处理；该消息与换课命令分离，不需要也不会授予管理课表权限。
 
 ## 身份与权限
 
@@ -65,7 +68,7 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 
 管理员有效权限固定为 63；普通用户固定含值 1。访问令牌默认 1 小时，设备会话默认 30 天可续期；插件用一次性配对码换取长期凭据。授权镜像超过 24 小时未更新时，局域网直连只允许查看课程。
 
-云端与局域网认证成功时，<code>auth_state.serverVersion</code> 都会携带当前 WebUI 版本；局域网值来自 <code>account_sync.serverVersion</code>。手表更新选择器以此作为版本上限。
+云端与局域网认证成功时，<code>auth_state.serverVersion</code> 都会携带当前 WebUI 版本；局域网值来自 <code>account_sync.serverVersion</code>。手表在本机持久化正式版/Beta 渠道与同版本强制覆盖选项，更新选择器仍以该服务端版本作为不可绕过的 SemVer 上限。
 
 ## 版本与构建
 
