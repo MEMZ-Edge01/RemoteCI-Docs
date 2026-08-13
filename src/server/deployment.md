@@ -88,6 +88,7 @@ HTTP 和 WS 不能保护登录密码、访问令牌与课表内容。不要通�
 - 服务端：<code>RemoteCI.Server-版本-linux-x64.zip</code> 或 <code>RemoteCI.Server-版本-win-x64.zip</code>。
 - 插件：<code>RemoteCI.Plugin-版本.cipx</code> 与 <code>checksums.md</code>。
 - 手表：<code>RemoteCI.Watch-版本.apk</code>。
+- 飞牛 fnOS：<code>RemoteCI-版本.fpk</code>（安装与更新见[飞牛 fnOS 安装](./fnos.md)）。
 
 需要本地构建时：
 
@@ -103,3 +104,7 @@ cd wearos
 - 插件的云端服务地址填写 <code>https://remoteci.example.com</code>。
 - 手表的云端服务地址填写同一个地址。
 - 不要手写 <code>/api</code> 或 <code>/ws</code> 路径，客户端会自动拼接。
+
+## 飞牛 fnOS
+
+RemoteCI 同时以飞牛 fnOS 应用（fpk）形式发布，安装、端口配置与更新方式见[飞牛 fnOS 安装](./fnos.md)。

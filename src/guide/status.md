@@ -27,7 +27,7 @@ RemoteCI 当前版本为 v0.2（插件 0.2.0.0、手表 0.2.0、服务端 0.2.0�
 - dotnet 作业：`dotnet build RemoteCI.slnx -c Release` 与 `dotnet test RemoteCI.slnx -c Release --no-build`。
 - wearos 作业：`./gradlew :app:assembleDebug :app:testDebugUnitTest`。
 
-源码中现有自动化测试约 63 个：服务端 24 个、插件 24 个、手表端 15 个，覆盖配对认证、权限、WebSocket 中转、换课、通知标题、扩展路由、更新检查与手表界面状态。
+源码中现有自动化测试约 99 个：服务端 34 个、插件 35 个、手表端 31 个，覆盖配对认证、权限、WebSocket 中转、换课、通知标题、扩展路由、更新检查（含 fnOS fpk 选择）与手表界面状态。
 
 ## 发布
 
@@ -36,6 +36,7 @@ RemoteCI 当前版本为 v0.2（插件 0.2.0.0、手表 0.2.0、服务端 0.2.0�
 - 服务端：linux-x64 与 win-x64 压缩包（<code>RemoteCI.Server-版本-平台.zip</code>）。
 - 插件：<code>RemoteCI.Plugin-版本.cipx</code> 与 <code>checksums.md</code>。
 - 手表：<code>RemoteCI.Watch-版本.apk</code>（配置签名密钥时使用 Release 签名）。
+- 飞牛 fnOS：<code>RemoteCI-版本.fpk</code> 与 <code>ghcr.io/memz-edge01/remoteci</code> 多架构镜像。
 
 ## 待真机验收
 
@@ -48,3 +49,4 @@ RemoteCI 当前版本为 v0.2（插件 0.2.0.0、手表 0.2.0、服务端 0.2.0�
 5. 交换、替换课程、音量、电源和扩展命令按权限返回正确结果。
 6. 局域网优先与云端回退在真机上通过。
 7. Docker、HTTPS、自动更新、备份和恢复流程完成实际演练。
+8. 飞牛 fnOS 真机安装 fpk、向导配置、桌面入口、WebUI 内下载更新与应用中心升级完成实际演练。
