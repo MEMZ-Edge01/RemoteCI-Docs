@@ -78,6 +78,7 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 - 插件 0.3.1.0：net8.0，兼容 ClassIsland 2.x 宿主；CIPX 由 <code>CreateCipx=true</code> 生成。
 - 服务端 0.3.1：net10.0，发布 linux-x64 / win-x64 平台包。
 - 手表 0.3.1：minSdk 30 / targetSdk 37，Release APK 使用签名密钥构建。
+- Wear OS 源码若位于云盘或 NAS 按需同步目录，可在不入库的 <code>wearos/local.properties</code> 中设置 <code>remoteci.buildDir=C:/本地目录</code>，将 Gradle 生成文件放到普通本地磁盘，避免重解析占位文件触发 <code>Cannot snapshot ... not a regular file</code>；也支持环境变量 <code>REMOTECI_WEAROS_BUILD_DIR</code> 和命令行属性 <code>-Premoteci.buildDir</code>。
 
 ## 开发状态
 
