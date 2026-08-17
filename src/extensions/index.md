@@ -6,13 +6,13 @@ order: 1
 
 # 接入扩展
 
-RemoteCI 插件公开了一组扩展接口：其他 ClassIsland 插件可以把自定义的“远程功能”注册进来，注册后该功能会自动出现在手表控制页底部，点击后由注册方自己的回调执行。
+RemoteCI 插件公开了一组扩展接口：其他 ClassIsland 插件可以把自定义的“远程功能”注册进来，注册后该功能会自动出现在手表和 WebUI 的控制菜单中，点击后由注册方自己的回调执行。
 
-本文面向想把手表变成自己插件遥控器的开发者，覆盖完整开发流程、接口参考、参数表单、安全边界与常见问题。示例代码均对照 RemoteCI 当前源码整理，可直接复制到自己的插件项目中。
+本文面向想把手表或 WebUI 变成自己插件遥控器的开发者，覆盖完整开发流程、接口参考、参数表单、安全边界与常见问题。示例代码均对照 RemoteCI 当前源码整理，可直接复制到自己的插件项目中。
 
 ## 能做什么
 
-扩展接口适合把“只有你的插件能做的事”带到手表上，例如：
+扩展接口适合把“只有你的插件能做的事”带到手表和 WebUI 上，例如：
 
 - 锁屏、休眠、重启或退出某个程序；
 - 显示自定义提醒或触发你的插件自己的通知；
@@ -27,10 +27,10 @@ RemoteCI 插件公开了一组扩展接口：其他 ClassIsland 插件可以把�
 
 1. 你的插件在 ClassIsland 启动完成（`AppStarted`）后，从主机容器取得 `IRemoteCiExtensionRegistry` 并注册扩展。
 2. RemoteCI 插件监听注册表变化，把扩展清单通过 `extensions_sync` 同步给局域网手表和云端服务端。
-3. 手表收到清单后，在“控制”页底部按当前用户的有效权限显示入口。
-4. 点击无参数扩展立即发送 `RunExtension` 命令；有参数扩展先进入参数表单，填写后发送。
+3. 手表收到清单后在“控制”页显示入口；WebUI 从服务端缓存读取同一清单，并在统一的“控制”页面中按当前用户有效权限显示入口。
+4. 用户在手表或 WebUI 点击无参数扩展时立即发送 `RunExtension` 命令；有参数扩展先填写参数表单再发送。
 5. RemoteCI 插件执行端校验权限与必填参数，调用你的 `ExecuteAsync`。
-6. 你返回 `CommandResult`，RemoteCI 把它作为回执传回手表并显示结果。
+6. 你返回 `CommandResult`，RemoteCI 把它作为回执传回发起命令的手表或 WebUI 并显示结果。
 
 整个流程中，RemoteCI 只负责“同步清单、转发命令、传回回执”，功能本身始终由你的代码实现。
 
@@ -97,7 +97,7 @@ public sealed class LockScreenExtension : RemoteCiExtensionBase
     /// <summary>手表控制菜单上显示的文案。</summary>
     public override string DisplayName => "锁屏";
 
-    /// <summary>执行所需的最小权限；手表显示与插件执行端都会校验。</summary>
+    /// <summary>执行所需的最小权限；手表、WebUI 显示与插件执行端都会校验。</summary>
     public override UserPermissions RequiredPermission => UserPermissions.SystemControl;
 
     /// <summary>可选 Material 图标名；未命中手表白名单时回退为纯文字。</summary>
@@ -249,8 +249,8 @@ public class MyPluginEntry : PluginBase
 | 成员 | 类型 | 说明 |
 | --- | --- | --- |
 | `Id` | `string` | 全局唯一扩展 Id；与已有注册项冲突时 `Register` 会抛出异常 |
-| `DisplayName` | `string` | 手表控制菜单展示的文案 |
-| `RequiredPermission` | `UserPermissions` | 执行所需的最小权限；手表显示与插件执行端都会校验 |
+| `DisplayName` | `string` | 手表与 WebUI 控制菜单展示的文案 |
+| `RequiredPermission` | `UserPermissions` | 执行所需的最小权限；手表、WebUI 显示与插件执行端都会校验 |
 | `Icon` | `string?` | 可选 Material 图标名；未知或缺失时手表回退为纯文字 |
 | `Parameters` | `IReadOnlyList<ExtensionParameter>` | 可选参数表单描述；为空时点击后直接执行 |
 | `ExecuteAsync` | 方法 | 执行远程功能；异常统一由 RemoteCI 转为 `INTERNAL_ERROR` 回执 |
@@ -283,7 +283,7 @@ RemoteCI 插件把它注册为 ClassIsland 主机容器的单例服务，可通�
 
 ### CommandResult 与回执码
 
-`ExecuteAsync` 必须返回 `CommandResult`。`Message` 会展示在手表上，因此建议写用户能看懂的结果文案。
+`ExecuteAsync` 必须返回 `CommandResult`。`Message` 会展示在发起操作的手表或 WebUI 上，因此建议写用户能看懂的结果文案。
 
 常用回执码：
 
@@ -307,15 +307,16 @@ RemoteCI 插件把它注册为 ClassIsland 主机容器的单例服务，可通�
 | 4 | 人员管理 |
 | 8 | 发送与清除通知 |
 | 16 | 换课 |
-| 32 | 主界面与电源控制 |
+| 32 | 主界面、音量与电源控制 |
+| 64 | 老师来了 |
 
-选择 `RequiredPermission` 时按实际操作强度决定：只读操作可用 `ViewCurrentCourse`，写操作建议 `SendNotifications`（通知类）或 `SystemControl`（系统控制类）。
+选择 `RequiredPermission` 时按实际操作强度决定：只读操作可用 `ViewCurrentCourse`，写操作建议按能力选择 `TeacherComing`（老师来了快捷提醒）、`SendNotifications`（自定义通知与清除提醒）或 `SystemControl`（主界面、音量与电源控制）。
 
 ## 参数表单
 
-扩展可声明 `Parameters` 列表，手表按 schema 渲染参数输入页，用户填写后以 `extensionArgs` 字典传入 `ExecuteAsync`（键为参数 `Key`，值统一为字符串）：
+扩展可声明 `Parameters` 列表，手表与 WebUI 按 schema 渲染参数输入页，用户填写后以 `extensionArgs` 字典传入 `ExecuteAsync`（键为参数 `Key`，值统一为字符串）：
 
-| 类型 | 手表呈现 |
+| 类型 | 控制端呈现 |
 | --- | --- |
 | `Text` | 单行文本输入 |
 | `Number` | 数字输入 |
@@ -333,7 +334,7 @@ RemoteCI 插件把它注册为 ClassIsland 主机容器的单例服务，可通�
 
 ## 安全边界
 
-- 手表端按当前用户有效权限隐藏入口，但隐藏按钮不构成安全控制；插件执行端会对每个 `RunExtension` 命令再次校验 `RequiredPermission`。
+- 手表端与 WebUI 按当前用户有效权限隐藏入口，但隐藏按钮不构成安全控制；插件执行端会对每个 `RunExtension` 命令再次校验 `RequiredPermission`。
 - `RunExtension` 命令在服务端只要求“已认证用户”，所需权限由插件端按注册项动态校验。
 - 未注册的扩展 Id 返回 `INVALID_REQUEST`；权限不足返回 `FORBIDDEN`；缺少必填参数返回 `INVALID_REQUEST`。
 - 授权镜像超过 24 小时未更新时，局域网直连会拒绝执行任何扩展命令。
@@ -347,13 +348,13 @@ RemoteCI 插件把它注册为 ClassIsland 主机容器的单例服务，可通�
 - `ExecuteAsync` 应尽快返回：RemoteCI 等待插件回执有上限，超时会返回 `COMMAND_TIMEOUT`，操作结果未知。
 - 参数解析要防御 `null`，使用 `args.GetValueOrDefault(key)` 并给出兜底值。
 - 插件更新时尽量保持接口兼容，避免因为 `RemoteCI.Plugin.dll` 版本不一致导致扩展不可用。
-- 与 RemoteCI 内置命令同类型的操作不要重复注册，避免手表菜单冗余。
+- 与 RemoteCI 内置命令同类型的操作不要重复注册，避免控制菜单冗余。
 
 ## 常见问题排查
 
 | 现象 | 可能原因 | 处理 |
 | --- | --- | --- |
-| 手表看不到扩展入口 | 清单未同步、当前用户权限不足、插件未连接 | 重启 ClassIsland；确认账号权限；确认 RemoteCI 连接正常 |
+| 手表或 WebUI 看不到扩展入口 | 清单未同步、当前用户权限不足、插件未连接 | 重启 ClassIsland；确认账号权限；确认 RemoteCI 连接正常 |
 | 点击后提示 `FORBIDDEN` | 当前用户权限不足 | 在服务端人员管理里授予对应权限 |
 | 提示 `INVALID_REQUEST` | 扩展 Id 未注册或缺少必填参数 | 检查插件是否加载了注册代码；检查参数表单填写 |
 | 提示 `INTERNAL_ERROR` | `ExecuteAsync` 抛出了异常 | 查看 ClassIsland 日志中的 `RemoteCI 扩展执行失败` 记录 |
@@ -364,4 +365,4 @@ RemoteCI 插件把它注册为 ClassIsland 主机容器的单例服务，可通�
 
 - [项目架构](../development/architecture.md)：协议 v2 数据流与命令编号。
 - [文档同步规则](../development/docs-maintenance.md)：功能变更时的文档同步要求。
-- [使用文档](../guide/features.md)：手表端扩展入口的实际使用方式。
+- [使用文档](../guide/features.md)：手表与 WebUI 扩展入口的实际使用方式。

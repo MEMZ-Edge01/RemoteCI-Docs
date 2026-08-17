@@ -42,7 +42,7 @@ docker compose start remoteci
 
 服务端、插件和手表使用三种不同的升级方式：
 
-- 服务端：管理员登录 WebUI 后，在“个人账号 → 系统更新”选择正式版或 Beta 渠道并点击“检查更新”。正式版排除预发布，Beta 同时包含正式版和预发布；启用强制更新后可重新下载并覆盖同一版本，但不会降级。Docker 会就地替换后由 <code>restart: unless-stopped</code> 重新启动；Windows 与裸机 Linux 会启动独立更新器，等待旧进程退出和文件锁释放后再替换实际程序集目录并自动重启。更新前会核对包内服务端版本与 release 标签。Visual Studio 或 <code>dotnet run</code> 的 Development 环境由构建工具管理，WebUI 会禁用在线覆盖更新，避免 release 写入源码目录。
+- 服务端：管理员登录 WebUI 后，在“系统配置 → 系统更新”选择正式版或 Beta 渠道并点击“检查更新”。正式版排除预发布，Beta 同时包含正式版和预发布；启用强制更新后可重新下载并覆盖同一版本，但不会降级。Docker 会就地替换后由 <code>restart: unless-stopped</code> 重新启动；Windows 与裸机 Linux 会启动独立更新器，等待旧进程退出和文件锁释放后再替换实际程序集目录并自动重启。更新前会核对包内服务端版本与 release 标签。Visual Studio 或 <code>dotnet run</code> 的 Development 环境由构建工具管理，WebUI 会禁用在线覆盖更新，避免 release 写入源码目录。
 - 插件：不做内置更新界面，由 ClassIsland 插件市场统一管理；每个 release 都附带 CIPX 与 checksums，指向 release 地址即可自动拉取新版本。
 - 手表：连接 WebUI 后，在“设置 → 更新”选择正式版或 Beta 渠道；可强制重新下载并覆盖同一版本，但不能降级，且目标始终不得高于该 WebUI 版本；通过系统安装器覆盖安装时要求发布包与当前安装包签名一致。
 - 飞牛 fnOS：WebUI 只显示“由fnOS应用商店管理”，检查和升级均由 fnOS 应用商店完成。
@@ -67,6 +67,6 @@ docker compose logs --tail 200 remoteci
 - 初始密码至少 8 位，实际部署建议使用随机长密码。
 - 不在 Compose 文件、截图或问题反馈中公开密码、令牌和配对码。
 - 普通用户按最小权限分配，设备丢失后立即撤销会话。
-- “主界面与电源控制”（SystemControl）单独保护主界面显隐与电源操作，不要与发送通知权限混用。
+- “老师来了”（TeacherComing）单独保护快捷提醒；“发送与清除通知”（SendNotifications）保护自定义通知和清除提醒；“主界面与电源控制”（SystemControl）保护主界面显隐、音量与电源操作。
 - 定期备份并实际演练恢复。
 - 定期更新服务端镜像、插件和手表应用。

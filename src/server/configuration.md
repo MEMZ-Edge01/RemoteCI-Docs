@@ -25,6 +25,7 @@ order: 2
 | <code>Server:BootstrapPluginPairCode</code> | <code>Server__BootstrapPluginPairCode</code> | 自动生成 | 首次启动插件配对码 |
 | <code>Server:AccessTokenTtl</code> | <code>Server__AccessTokenTtl</code> | <code>01:00:00</code> | 短期访问令牌有效期 |
 | <code>Server:DeviceSessionTtl</code> | <code>Server__DeviceSessionTtl</code> | <code>30.00:00:00</code> | 设备会话有效期 |
+| <code>Server:ConnectionAuthorizationRefreshInterval</code> | <code>Server__ConnectionAuthorizationRefreshInterval</code> | <code>00:01:00</code> | 在线 WebSocket 持久化授权状态的兜底复查周期 |
 
 另有两个优先级更高、便于容器首次启动的环境变量：
 
@@ -32,6 +33,8 @@ order: 2
 - <code>REMOTECI_PLUGIN_PAIR_CODE</code>：首次一次性插件配对码。
 
 这些初始值只在数据库中没有对应数据时使用。修改已经运行过的容器环境变量，不会覆盖现有管理员密码或重新生成插件凭据。
+
+WebSocket 在握手时完成一次完整数据库认证，后续高频状态消息使用连接内缓存身份。管理员吊销插件凭据、撤销设备会话、修改密码或调整账号权限时，服务端会主动断开或刷新对应连接；`ConnectionAuthorizationRefreshInterval` 仅用于处理外部数据库修改和主动通知遗漏，默认一分钟复查一次。设置过短会重新造成高频 SQLite 查询，生产环境通常不应低于默认值。
 
 插件配对码在使用前持续有效，成功配对后立即作废。需要新配对码时，登录 WebUI 在概览页点击“生成插件配对码”。
 
