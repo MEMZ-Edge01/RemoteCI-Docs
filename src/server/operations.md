@@ -67,6 +67,6 @@ docker compose logs --tail 200 remoteci
 - 初始密码至少 8 位，实际部署建议使用随机长密码。
 - 不在 Compose 文件、截图或问题反馈中公开密码、令牌和配对码。
 - 普通用户按最小权限分配，设备丢失后立即撤销会话。
-- “老师来了”（TeacherComing）单独保护快捷提醒；“发送与清除通知”（SendNotifications）保护自定义通知和清除提醒；“主界面与电源控制”（SystemControl）保护主界面显隐、音量与电源操作。
+- “老师来了”（TeacherComing）单独保护快捷提醒；“发送与清除通知”（SendNotifications）保护自定义通知和清除提醒；“扩展功能”（RunExtensions）是插件扩展的独立总权限；“主界面”（MainMenuControl）保护主界面显隐；“电源控制”（PowerControl）保护音量与电源操作。
 - 定期备份并实际演练恢复。
 - 定期更新服务端镜像、插件和手表应用。

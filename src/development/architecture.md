@@ -6,7 +6,7 @@ order: 1
 
 # 项目架构
 
-RemoteCI 采用一个主项目仓库和一个独立文档仓库。当前三端按协议 v2 对齐，版本为 v0.2。
+RemoteCI 采用一个主项目仓库和一个独立文档仓库。当前开发分支三端按协议 v3 对齐；协议 v3 拆分主界面与电源权限，并增加独立扩展权限和逐扩展策略。
 
 ## 运行组件
 
@@ -24,7 +24,7 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 | <code>plugin</code> | .NET 8、ClassIsland Plugin SDK | 收集课表状态、提供局域网服务、执行远程命令、注册扩展、旁路观察通知 |
 | <code>server</code> | ASP.NET Core 10、SQLite、WebSocket | 身份认证、权限检查、状态保存、消息中转与自动更新 |
 | <code>wearos</code> | Kotlin、Compose for Wear OS（minSdk 30） | 展示课程、课表、通知与操作界面 |
-| <code>shared</code> | C# 模型库 | 插件与服务端共享协议 v2 和数据模型 |
+| <code>shared</code> | C# 模型库 | 插件与服务端共享协议 v3 和数据模型 |
 
 ## 数据流
 
@@ -35,9 +35,9 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 5. 插件旁路观察 ClassIsland 统一通知入口，把自动化“显示提醒”和第三方插件通知转换为事件广播；其他插件注册的扩展功能清单通过 <code>extensions_sync</code> 同步给服务端和手表，WebUI 从服务端缓存渲染同一套控制入口。云端服务端与插件局域网服务都会缓存最近一次扩展清单，并在手表认证后补发。
 6. 首次登录可用 UDP <code>48765</code> 扫描插件；选中后通过未登录的 <code>/bootstrap</code> WebSocket 仅读取云服务器地址。密码仍通过云端 HTTPS 登录，设备会话同步给插件后再进行局域网 HMAC 认证。
 
-## 协议 v2 消息
+## 协议 v3 消息
 
-所有 WebSocket 信封都带 <code>protocolVersion: 2</code>、<code>type</code>、<code>messageId</code> 与可选 <code>replyToMessageId</code>。主要类型：
+所有 WebSocket 信封都带 <code>protocolVersion: 3</code>、<code>type</code>、<code>messageId</code> 与可选 <code>replyToMessageId</code>。v1/v2 组件会被明确拒绝，避免旧权限语义造成越权或功能失效。主要类型：
 
 | 类型 | 方向 | 用途 |
 | --- | --- | --- |
@@ -63,14 +63,16 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 | 值 | 权限 |
 | --- | --- |
 | 1 | 查看当前课程 |
-| 2 | WebUI 访问 |
+| 2 | 概览 |
 | 4 | 人员管理 |
 | 8 | 发送与清除通知 |
 | 16 | 换课 |
-| 32 | 主界面、音量与电源控制 |
+| 32 | 电源控制（含音量） |
 | 64 | 老师来了 |
+| 128 | 扩展功能 |
+| 256 | 主界面 |
 
-管理员有效权限固定为 127；普通用户固定含值 1。访问令牌默认 1 小时，设备会话默认 30 天可续期；插件用一次性配对码换取长期凭据。授权镜像超过 24 小时未更新时，局域网直连只允许查看课程。
+管理员有效权限固定为 511；普通用户固定含值 1，WebUI 课表查看和手动拉取只要求登录，值 16 保护换课与自动拉取设置。访问令牌默认 1 小时，设备会话默认 30 天可续期；插件用一次性配对码换取长期凭据。扩展开放策略和个人手表展示偏好随授权镜像同步；镜像超过 24 小时未更新时，局域网直连只允许查看课程。
 
 云端 WebSocket 只在握手时完整查询令牌，连接对象缓存插件凭据 ID、设备会话 ID、有效权限和访问令牌到期时间。普通 `state_push`、广播和命令转发不逐条访问 SQLite；凭据或设备会话吊销、改密、账号禁用和权限修改通过连接注册表主动失效，后台默认每分钟再做一次持久化授权兜底复查。
 
