@@ -41,7 +41,7 @@ features:
 
 RemoteCI 是面向 ClassIsland 2.x 的课表手表联动项目，由 ClassIsland 插件、ASP.NET Core 服务端、Wear OS 客户端和共享通信协议组成。
 
-当前发布版本为 v0.3.2；开发分支的服务端、插件与手表端已升级到协议 v3，并修复 Windows、Linux、Docker、fnOS 与 Wear OS 的更新流程。协议 v3 组件必须成套升级，不能与 v2 混用。部署到正式环境前，请先阅读[安全与运维建议](./server/operations.md)。
+当前软件发布版本统一为 v3.1.0，通信协议号为整数 3。任意 v3.x.x 软件可以互连，新功能是否显示由能力协商决定；V2/V4 与 V3 不能直接通信。部署到正式环境前，请先阅读[安全与运维建议](./server/operations.md)。
 
 ## 从这里开始
 
@@ -82,5 +82,5 @@ RemoteCI 是面向 ClassIsland 2.x 的课表手表联动项目，由 ClassIsland
 - 希望通过扩展接口把更多课堂操作带到手表。
 
 ::: warning 当前状态
-RemoteCI v0.2 已通过 CI 构建与自动化测试，但尚未完成真机端到端验收。本文档依据当前源码编写；若发布包与源码版本不一致，应以发布说明为准。
+RemoteCI v3.1.0 已覆盖自动化构建与测试，但尚未完成真实 WebUI、ClassIsland 插件和 Wear OS 手表的端到端验收。本文档依据当前源码编写；若发布包与源码版本不一致，应以发布说明为准。
 :::

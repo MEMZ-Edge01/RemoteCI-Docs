@@ -6,7 +6,7 @@ order: 1
 
 # 项目架构
 
-RemoteCI 采用一个主项目仓库和一个独立文档仓库。当前开发分支三端按协议 v3 对齐；协议 v3 拆分主界面与电源权限，并增加独立扩展权限和逐扩展策略。
+RemoteCI 采用一个主项目仓库和一个独立文档仓库。当前三端软件版本统一为 v3.1.0，通信协议号独立为整数 3；协议 v3 拆分主界面与电源权限，并增加独立扩展权限、逐扩展策略和能力协商。
 
 ## 运行组件
 
@@ -37,12 +37,14 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 
 ## 协议 v3 消息
 
-所有 WebSocket 信封都带 <code>protocolVersion: 3</code>、<code>type</code>、<code>messageId</code> 与可选 <code>replyToMessageId</code>。v1/v2 组件会被明确拒绝，避免旧权限语义造成越权或功能失效。主要类型：
+所有 WebSocket 信封都带 <code>protocolVersion: 3</code>、<code>type</code>、<code>messageId</code> 与可选 <code>replyToMessageId</code>。软件版本不参与连接拒绝，任意 v3.x.x 端均可通信；协议号不是 3 才会被明确拒绝。主要类型：
 
 | 类型 | 方向 | 用途 |
 | --- | --- | --- |
 | <code>auth_challenge</code> / <code>auth_proof</code> | 插件 ↔ 手表 | 局域网一次性 HMAC 挑战认证 |
-| <code>account_sync</code> | 服务端 → 插件 | 账号、权限、设备验证器与服务端版本镜像 |
+| <code>account_sync</code> | 服务端 → 插件 | 账号、权限、设备验证器、服务端版本与可选服务端能力镜像 |
+| <code>peer_capabilities</code> | 插件/手表 → 服务端 | 软件版本与稳定字符串能力列表 |
+| <code>capabilities_sync</code> | 服务端/插件 → 手表 | 服务端与当前主插件的能力快照 |
 | <code>state_push</code> | 插件 → 服务端/手表 | 高频当前课程状态 |
 | <code>schedule_sync</code> | 插件 → 服务端/手表 | 未来七日课表 |
 | <code>schedule_pull</code> | 服务端/手表 → 插件 | 请求插件立即重新生成并推送七日课表；不携带参数 |
@@ -76,15 +78,17 @@ ClassIsland 插件 ── 局域网 WebSocket（HMAC 挑战认证）── Wear 
 
 云端 WebSocket 只在握手时完整查询令牌，连接对象缓存插件凭据 ID、设备会话 ID、有效权限和访问令牌到期时间。普通 `state_push`、广播和命令转发不逐条访问 SQLite；凭据或设备会话吊销、改密、账号禁用和权限修改通过连接注册表主动失效，后台默认每分钟再做一次持久化授权兜底复查。
 
-云端与局域网认证成功时，<code>auth_state.serverVersion</code> 都会携带当前 WebUI 版本；局域网值来自 <code>account_sync.serverVersion</code>。手表在本机持久化正式版/Beta 渠道与同版本强制覆盖选项，更新选择器仍以该服务端版本作为不可绕过的 SemVer 上限。
+云端与局域网认证成功时，<code>auth_state.serverVersion</code> 都会携带当前 WebUI 软件版本；局域网值来自 <code>account_sync.serverVersion</code>。该版本用于诊断，不作为连接或手表更新上限。服务端和手表更新器只选择协议主版本相同的 v3.x.x Release，V4 需要协调升级。
+
+WebUI 的有效能力是“服务端 ∩ 当前主插件”，手表的有效能力是“手表本地 ∩ 服务端 ∩ 当前主插件”。未上报能力的旧 V3 端回退到 V3.1.0 基础能力，未知能力安全忽略。当前主插件为最早接入的健康插件；主插件切换或能力变化时重新广播快照。能力只控制入口和转发兼容性，账号权限与扩展策略仍独立校验。
 
 ## 版本与构建
 
-- 插件 0.3.1.0：net8.0，兼容 ClassIsland 2.x 宿主；CIPX 由 <code>CreateCipx=true</code> 生成。
-- 服务端 0.3.2：net10.0，发布 linux-x64 / win-x64 平台包。
-- 手表 0.3.1：minSdk 30 / targetSdk 37，Release APK 使用签名密钥构建。
+- 插件 3.1.0：net8.0，兼容 ClassIsland 2.x 宿主；CIPX 由 <code>CreateCipx=true</code> 生成。
+- 服务端 3.1.0：net10.0，发布 linux-x64 / win-x64 平台包。
+- 手表 3.1.0：minSdk 30 / targetSdk 37，Release APK 使用签名密钥构建。
 - Wear OS 源码若位于云盘或 NAS 按需同步目录，可在不入库的 <code>wearos/local.properties</code> 中设置 <code>remoteci.buildDir=C:/本地目录</code>，将 Gradle 生成文件放到普通本地磁盘，避免重解析占位文件触发 <code>Cannot snapshot ... not a regular file</code>；也支持环境变量 <code>REMOTECI_WEAROS_BUILD_DIR</code> 和命令行属性 <code>-Premoteci.buildDir</code>。
 
 ## 开发状态
 
-v0.3.2 已完成独立“老师来了”指令与权限、WebUI 控制页以及三端协议对齐。发布前仍应以同一版本在真机完成端到端验收，见[开发状态](../guide/status.md)。
+v3.1.0 已完成独立“老师来了”指令与权限、WebUI 控制页、V3 协议和三端能力协商。发布前仍应使用混合 V3 小版本在真机完成端到端验收，见[开发状态](../guide/status.md)。
