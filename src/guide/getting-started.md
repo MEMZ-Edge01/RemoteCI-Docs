@@ -13,7 +13,7 @@ RemoteCI 有三项运行组件：ClassIsland 插件、RemoteCI 服务端和 Wear
 | 组件 | 要求 |
 | --- | --- |
 | 教室电脑 | 已安装并可正常运行的 ClassIsland 2.x |
-| 手表 | Wear OS 3 或更高版本，RemoteCI 手表应用 3.2.1.0 |
+| 手表 | Wear OS 3 或更高版本，RemoteCI 手表应用 3.2.1.2 |
 | 服务端 | 支持 Docker 的 NAS 或 Linux 服务器，建议有域名和 HTTPS |
 | 网络 | 局域网直连默认使用 TCP 8765，设备扫描固定使用 UDP 48765；服务端默认使用 TCP 8080 |
 
@@ -33,7 +33,7 @@ docker logs remoteci
 
 ## 二、连接 ClassIsland 插件
 
-1. 在 ClassIsland 中安装 RemoteCI 插件（3.2.1.0）。
+1. 在 ClassIsland 中安装 RemoteCI 插件（3.2.1.2）。
 2. 打开“设置”中的“RemoteCI 设置”。
 3. 普通设置中确认局域网端口（默认 <code>8765</code>）；局域网服务默认开启，关闭开关只在“RemoteCI 开发者设置”中显示。
 4. 填写云端服务端的完整地址；普通设置不提供关闭云端中转的开关。
@@ -44,7 +44,7 @@ docker logs remoteci
 配对码在使用前持续有效，成功配对后立即作废；插件换到长期凭据后会清空本地配对码。
 
 ::: warning 首次硬切迁移
-`3.2.1.0` 是从旧 `v3.2.0` 三段稳定标签切换到 ClassIsland 四段纯数字标签后的首个版本。旧安装不会自动发现新标签，首次升级请手动安装服务端或 FPK、`RemoteCI.Plugin.cipx` 和 `RemoteCI.Watch-3.2.1.0.apk`；后续稳定版使用四段数字标签自动更新，`v3.x.x-beta.y` 仅用于测试。
+`3.2.1.2` 是从旧 `v3.2.0` 三段稳定标签切换后首个实际发布的 ClassIsland 四段纯数字版本。旧安装不会自动发现新标签，首次升级请手动安装服务端或 FPK、`RemoteCI.Plugin.cipx` 和 `RemoteCI.Watch-3.2.1.2.apk`；后续稳定版使用四段数字标签自动更新，`v3.x.x-beta.y` 仅用于测试。
 :::
 
 ::: tip 地址写法
