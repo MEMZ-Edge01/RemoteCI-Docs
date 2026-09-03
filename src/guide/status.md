@@ -39,7 +39,7 @@ RemoteCI 当前稳定软件版本统一为 3.2.1.2，通信协议号为整数 3�
 - 服务端：linux-x64 与 win-x64 压缩包（<code>RemoteCI.Server-版本-平台.zip</code>）。
 - 插件：稳定版固定使用 <code>RemoteCI.Plugin.cipx</code> 与 <code>checksums.md</code>；Release 正文包含与该文件名一致的 <code>CLASSISLAND_PKG_MD5</code> 标记，Beta 包不进入插件市场。
 - 手表：<code>RemoteCI.Watch-版本.apk</code>（配置签名密钥时使用 Release 签名）。
-- 飞牛 fnOS：一个在线多架构 FPK、x86_64 与 ARM64 两个单架构离线 FPK，以及 <code>ghcr.io/memz-edge01/remoteci</code> 多架构镜像。
+- 飞牛 fnOS：一个在线多架构 FPK、x86_64 与 ARM64 两个单架构离线 FPK，以及 <code>ghcr.io/edge-hh/remoteci</code> 多架构镜像。
 
 ## 待真机验收
 

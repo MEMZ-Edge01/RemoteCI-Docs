@@ -17,7 +17,7 @@ actions:
     link: ./server/deployment
   - text: GitHub
     icon: brands:github
-    link: https://github.com/MEMZ-Edge01/RemoteCI
+    link: https://github.com/Edge-HH/RemoteCI
 features:
   - title: 课表随身查看
     icon: clock

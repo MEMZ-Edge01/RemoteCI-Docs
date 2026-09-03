@@ -15,7 +15,7 @@ RemoteCI 以飞牛 fnOS 应用（`.fpk`）形式发布，采用 Docker 应用形
 - `RemoteCI-<版本>.fpk`：约 45 KB 的在线多架构包，安装时从 GHCR 拉取镜像。
 - `RemoteCI-<版本>-fnos-x86_64-offline.fpk`：约 116 MB，内置 amd64 镜像的 x86_64 离线包。
 - `RemoteCI-<版本>-fnos-arm64-offline.fpk`：约 112 MB，内置 arm64 镜像的 ARM64 离线包。
-- `ghcr.io/memz-edge01/remoteci:<版本>`：多架构 Docker 镜像（linux/amd64 与 linux/arm64），由发布流水线自动构建并推送。
+- `ghcr.io/edge-hh/remoteci:<版本>`：多架构 Docker 镜像（linux/amd64 与 linux/arm64），由发布流水线自动构建并推送。
 
 离线包的实际体积会随镜像压缩结果变化。网络可以稳定访问 GHCR 时可选在线包；网络较慢或不可达时应选与 NAS 架构一致的离线包。离线包会先校验归档、架构、版本标签和 Image ID，再执行 `docker load`，不会回退到 GHCR。
 

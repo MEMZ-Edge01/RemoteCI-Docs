@@ -1,6 +1,6 @@
 # RemoteCI 文档
 
-**在线文档：[https://memz-edge01.github.io/RemoteCI-Docs/](https://memz-edge01.github.io/RemoteCI-Docs/)**
+**在线文档：[https://edge-hh.github.io/RemoteCI-Docs/](https://edge-hh.github.io/RemoteCI-Docs/)**
 
 RemoteCI 的项目介绍、使用指南和服务端部署文档。
 
@@ -40,5 +40,5 @@ RemoteCI 每次增加、删除或改变用户可见功能时，都必须同步�
 
 ## 相关仓库
 
-- RemoteCI：https://github.com/MEMZ-Edge01/RemoteCI
-- RemoteCI-Docs：https://github.com/MEMZ-Edge01/RemoteCI-Docs
+- RemoteCI：https://github.com/Edge-HH/RemoteCI
+- RemoteCI-Docs：https://github.com/Edge-HH/RemoteCI-Docs

@@ -14,5 +14,5 @@
 功能代码和文档位于两个仓库时，请在两个 Pull Request 中互相添加链接。
 
 参与本项目即视为同意 [行为准则](CODE_OF_CONDUCT.md)；发现安全问题时请通过
-RemoteCI 主仓库的[私密安全公告](https://github.com/MEMZ-Edge01/RemoteCI/security/advisories/new)
+RemoteCI 主仓库的[私密安全公告](https://github.com/Edge-HH/RemoteCI/security/advisories/new)
 提交，不要在 Issue 或 PR 中公开细节。

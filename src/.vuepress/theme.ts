@@ -1,13 +1,13 @@
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default hopeTheme({
-  hostname: "https://memz-edge01.github.io/RemoteCI-Docs/",
+  hostname: "https://edge-hh.github.io/RemoteCI-Docs/",
   author: {
-    name: "MEMZ-Edge01",
-    url: "https://github.com/MEMZ-Edge01",
+    name: "Edge-HH",
+    url: "https://github.com/Edge-HH",
   },
   logo: "/logo.svg",
-  repo: "MEMZ-Edge01/RemoteCI-Docs",
+  repo: "Edge-HH/RemoteCI-Docs",
   docsDir: "src",
   pure: true,
   lastUpdated: false,
@@ -15,7 +15,7 @@ export default hopeTheme({
   changelog: false,
   displayFooter: true,
   footer: "RemoteCI 文档",
-  copyright: "Copyright © 2026 MEMZ-Edge01",
+  copyright: "Copyright © 2026 Edge-HH",
   navbar: [
     { text: "首页", icon: "home", link: "/" },
     { text: "快速开始", icon: "rocket", link: "/guide/getting-started" },
